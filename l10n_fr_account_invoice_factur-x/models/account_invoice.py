@@ -13,10 +13,6 @@ class AccountInvoice(models.Model):
     def _cii_get_party_identification(self, commercial_partner):
         res = super(AccountInvoice, self)._cii_get_party_identification(
             commercial_partner)
-        # partner.siret has a value even if partner.nic == False
-        if commercial_partner.siren and commercial_partner.nic:
-            if self._context.get('fr_chorus_cii16b'):
-                res['1'] = commercial_partner.siret
-            else:
-                res['0002'] = commercial_partner.siret
+        if commercial_partner.siren:
+            res["0002"] = commercial_partner.siren
         return res
